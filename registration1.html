@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Innovation Summit 2025 - Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><polygon fill="rgba(255,255,255,0.1)" points="0,0 1000,0 1000,60 0,100"/></svg>');
+            background-size: cover;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: -2rem auto 2rem;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        input.error,
+        select.error {
+            border-color: #e53e3e;
+            background: #fef2f2;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            border-color: #6366f1;
+            background: #f8faff;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+            accent-color: #6366f1;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #5b5bf6 0%, #7c3aed 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-description {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        /* Payment Message */
+        .payment-message {
+            background: #f0f9ff;
+            border: 2px solid #0ea5e9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+            text-align: center;
+        }
+
+        .payment-message.show {
+            display: block;
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            color: #0ea5e9;
+            margin-bottom: 1rem;
+        }
+
+        .payment-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-description {
+            color: #0c4a6e;
+            line-height: 1.5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 2rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .form-card {
+                padding: 1.5rem;
+                margin: -1rem 1rem 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Tech Innovation Summit 2025</h1>
+            <p>Complete your registration below</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Registration Form -->
+        <div class="form-card" id="registrationForm">
+            <h2 class="form-title">Registration Form</h2>
+            <form id="summitForm" novalidate>
+                <!-- Personal Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="firstName" name="firstName" required>
+                        <div class="error-message" id="firstNameError">Please enter your first name</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="lastName" name="lastName" required>
+                        <div class="error-message" id="lastNameError">Please enter your last name</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <!-- Professional Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" name="jobTitle">
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company/Organization</label>
+                        <input type="text" id="company" name="company">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" placeholder="" pattern="[0-9]{10}">
+                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                </div>
+
+                <!-- Preferences -->
+                <div class="form-group">
+                    <label for="dietary">Dietary Restrictions</label>
+                    <select id="dietary" name="dietary">
+                        <option value="">No restrictions</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="gluten-free">Gluten-free</option>
+                        <option value="dairy-free">Dairy-free</option>
+                        <option value="nut-allergy">Nut allergy</option>
+                        <option value="other">Other (please specify in comments)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Workshop Preferences (Select all that interest you)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ai-ml" name="workshops" value="AI & Machine Learning">
+                            <label for="ai-ml">AI & Machine Learning</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="blockchain" name="workshops" value="Blockchain Technology">
+                            <label for="blockchain">Blockchain Technology</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cloud" name="workshops" value="Cloud Computing">
+                            <label for="cloud">Cloud Computing</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="cybersecurity" name="workshops" value="Cybersecurity">
+                            <label for="cybersecurity">Cybersecurity</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="iot" name="workshops" value="Internet of Things">
+                            <label for="iot">Internet of Things</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="startup" name="workshops" value="Startup Ecosystem">
+                            <label for="startup">Startup Ecosystem</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="spinner" id="spinner"></span>
+                    <span id="submitText">Complete Registration</span>
+                </button>
+
+                <!-- Payment Message -->
+                <div class="payment-message" id="paymentMessage">
+                    <div class="payment-icon">💳</div>
+                    <div class="payment-title">Payment Link Sent!</div>
+                    <div class="payment-description">
+                        A secure payment link has been sent to your email address. 
+                        Please check your inbox and complete the payment to finalize your registration.
+                        <br><br>
+                        <strong>Note:</strong> Check your spam folder if you don't see the email within a few minutes.
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">✓</div>
+                    <div class="success-title">Registration Submitted Successfully!</div>
+                    <div class="success-description">
+                        Thank you for registering for Tech Innovation Summit 2025. 
+                        Your registration details have been saved and you will receive further updates via email.
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Email service simulation
+        function sendPaymentEmail(userEmail, userData) {
+            // Generate random payment link
+            const paymentId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+            const paymentLink = `https://payments.techsummit2025.com/pay?id=${paymentId}&email=${encodeURIComponent(userEmail)}`;
+            
+            // Simulate email sending
+            const emailData = {
+                to: userEmail,
+                subject: 'Complete Your Tech Innovation Summit 2025 Registration Payment',
+                body: `
+                    Dear ${userData.firstName} ${userData.lastName},
+                    
+                    Thank you for registering for Tech Innovation Summit 2025!
+                    
+                    To complete your registration, please click the link below to make your payment:
+                    ${paymentLink}
+                    
+                    Registration Fee: $299
+                    Event Date: March 15-16, 2025
+                    Location: Tech Convention Center
+                    
+                    Your Registration Details:
+                    - Name: ${userData.firstName} ${userData.lastName}
+                    - Email: ${userData.email}
+                    - Company: ${userData.company || 'Not specified'}
+                    - Job Title: ${userData.jobTitle || 'Not specified'}
+                    - Selected Workshops: ${userData.workshops ? userData.workshops.join(', ') : 'None selected'}
+                    
+                    This payment link is valid for 48 hours. If you have any questions, please contact us at support@techsummit2025.com
+                    
+                    We look forward to seeing you at the summit!
+                    
+                    Best regards,
+                    Tech Innovation Summit 2025 Team
+                `
+            };
+            
+            // In a real application, you would call your email service API here
+            console.log('Sending email:', emailData);
+            
+            // Simulate successful email sending
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({ success: true, paymentLink: paymentLink });
+                }, 1000);
+            });
+        }
+
+        // Form validation and submission handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('summitForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('spinner');
+            const submitText = document.getElementById('submitText');
+            const paymentMessage = document.getElementById('paymentMessage');
+            const successMessage = document.getElementById('successMessage');
+
+            // Validation rules
+            const validators = {
+                firstName: (value) => value.trim().length >= 2,
+                lastName: (value) => value.trim().length >= 2,
+                email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()),
+                phone: (value) => !value || /^[\+]?[\d\s\(\)\-]{10,}$/.test(value.replace(/\s/g, ''))
+            };
+
+            // Real-time validation
+            Object.keys(validators).forEach(field => {
+                const input = document.getElementById(field);
+                const errorDiv = document.getElementById(field + 'Error');
+
+                input.addEventListener('blur', function() {
+                    validateField(field, input.value, input, errorDiv);
+                });
+
+                input.addEventListener('input', function() {
+                    if (input.classList.contains('error')) {
+                        validateField(field, input.value, input, errorDiv);
+                    }
+                });
+            });
+
+            function validateField(fieldName, value, input, errorDiv) {
+                const isValid = validators[fieldName](value);
+                
+                if (isValid) {
+                    input.classList.remove('error');
+                    errorDiv.classList.remove('show');
+                    return true;
+                } else {
+                    input.classList.add('error');
+                    errorDiv.classList.add('show');
+                    return false;
+                }
+            }
+
+            function validateForm() {
+                let isValid = true;
+                
+                Object.keys(validators).forEach(field => {
+                    const input = document.getElementById(field);
+                    const errorDiv = document.getElementById(field + 'Error');
+                    
+                    if (input.required || input.value) {
+                        if (!validateField(field, input.value, input, errorDiv)) {
+                            isValid = false;
+                        }
+                    }
+                });
+
+                return isValid;
+            }   
+            // Form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    return;
+                }
+
+                // Show loading state
+                submitBtn.disabled = true;
+                spinner.style.display = 'inline-block';
+                submitText.textContent = 'Processing...';
+
+                try {
+                    // Collect form data
+                    const formData = new FormData(form);
+                    const userData = {};
+                    
+                    for (let [key, value] of formData.entries()) {
+                        if (key === 'workshops') {
+                            if (!userData.workshops) userData.workshops = [];
+                            userData.workshops.push(value);
+                        } else {
+                            userData[key] = value;
+                        }
+                    }
+
+                    // Send payment email
+                    submitText.textContent = 'Sending payment link...';
+                    const emailResult = await sendPaymentEmail(userData.email, userData);
+
+                    if (emailResult.success) {
+                        // Show success messages
+                        submitText.textContent = 'Registration Complete!';
+                        successMessage.classList.add('show');
+                        paymentMessage.classList.add('show');
+                        
+                        // Scroll to messages
+                        paymentMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        // Reset form after a delay
+                        setTimeout(() => {
+                            form.reset();
+                            submitBtn.disabled = false;
+                            spinner.style.display = 'none';
+                            submitText.textContent = 'Complete Registration';
+                            successMessage.classList.remove('show');
+                            paymentMessage.classList.remove('show');
+                        }, 10000);
+                    } else {
+                        throw new Error('Failed to send email');
+                    }
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    submitBtn.disabled = false;
+                    spinner.style.display = 'none';
+                    submitText.textContent = 'Complete Registration';
+                    alert('There was an error processing your registration. Please try again.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

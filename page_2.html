@@ -1,0 +1,90 @@
+<!-- index.html (Dashboard Page) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Performance Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .dashboard { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .stat { text-align: center; margin-bottom: 30px; }
+    .stat-number { font-size: 48px; color: #6366f1; }
+    .cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .card { flex: 1 1 200px; padding: 20px; background: #eef; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.3s; }
+    .card:hover { background: #dde; }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>Interview Performance Dashboard</h1>
+    <div class="stat">
+      <div class="stat-number" id="mockScore">0</div>
+      <div class="stat-label">Avg. Interview Score</div>
+    </div>
+    <div class="cards">
+      <div class="card" onclick="openMeetingPage('technical')">Technical Round</div>
+      <div class="card" onclick="openMeetingPage('hr')">HR Round</div>
+      <div class="card" onclick="openMeetingPage('managerial')">Managerial Round</div>
+    </div>
+  </div>
+
+  <script>
+    const mockInterviews = [
+      { round: "Technical", score: 85 },
+      { round: "HR", score: 75 },
+      { round: "Managerial", score: 90 }
+    ];
+
+    const total = mockInterviews.reduce((sum, m) => sum + m.score, 0);
+    const avgMockScore = (total / mockInterviews.length).toFixed(2);
+    document.getElementById("mockScore").innerText = avgMockScore;
+
+    function openMeetingPage(roundType) {
+      window.location.href = `meeting.html?round=${roundType}`;
+    }
+  </script>
+</body>
+</html>
+
+
+<!-- meeting.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interview Meeting</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f0f0f0; display: flex; align-items: center; justify-content: center; height: 100vh; }
+    .meeting-box { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.2); width: 500px; }
+    h2 { margin-bottom: 10px; }
+    .btn { padding: 12px 20px; background: #6366f1; color: #fff; border: none; border-radius: 6px; cursor: pointer; margin-top: 20px; }
+    textarea { width: 100%; height: 100px; margin-top: 15px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <div class="meeting-box">
+    <h2 id="roundTitle">Interview Round</h2>
+    <p>This is your simulated meeting space. You can take notes and join the Zoom call.</p>
+    <textarea placeholder="Write your notes here..."></textarea>
+    <br>
+    <button class="btn" onclick="startZoomCall()">Take Call (Zoom)</button>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const round = params.get('round');
+    document.getElementById("roundTitle").innerText = `${round.charAt(0).toUpperCase() + round.slice(1)} Round`;
+
+    function startZoomCall() {
+      const zoomLinks = {
+        technical: "https://zoom.us/j/1234567890",
+        hr: "https://zoom.us/j/2345678901",
+        managerial: "https://zoom.us/j/3456789012"
+      };
+      const link = zoomLinks[round] || "https://zoom.us";
+      window.open(link, "_blank");
+    }
+  </script>
+</body>
+</html>

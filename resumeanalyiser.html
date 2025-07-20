@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Resume Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            color: var(--dark);
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 3rem;
+            margin: 2rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+        
+        .upload-area i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        
+        button:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        #result {
+            margin-top: 2rem;
+            text-align: left;
+            display: none;
+        }
+        
+        .score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .feedback {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: var(--success);
+            width: 0;
+            transition: width 1s;
+        }
+
+        #loading {
+            display: none;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-file-alt"></i> ATS Resume Analyzer</h1>
+        <p>Upload your resume to check its compatibility with Applicant Tracking Systems (ATS)</p>
+        
+        <div class="upload-area" id="uploadArea">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <h3>Drag & Drop Your Resume Here</h3>
+            <p>or click to browse files (PDF, DOCX, TXT)</p>
+            <input type="file" id="fileInput" accept=".pdf,.docx,.txt">
+        </div>
+        
+        <button id="analyzeBtn">Analyze Resume</button>
+        <div id="loading">
+            <i class="fas fa-spinner fa-spin"></i> Analyzing your resume...
+        </div>
+        
+        <div id="result">
+            <h2>Your ATS Score:</h2>
+            <div class="score" id="score">0</div>
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const loadingDiv = document.getElementById('loading');
+        const resultDiv = document.getElementById('result');
+        const scoreDiv = document.getElementById('score');
+        const progressBar = document.getElementById('progressBar');
+        const feedbackDiv = document.getElementById('feedback');
+
+        // Handle drag & drop
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#4361ee';
+            uploadArea.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#ccc';
+            uploadArea.style.backgroundColor = 'transparent';
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileInput.files = e.dataTransfer.files;
+            updateUploadArea();
+        });
+
+        fileInput.addEventListener('change', updateUploadArea);
+
+        function updateUploadArea() {
+            if (fileInput.files.length > 0) {
+                uploadArea.innerHTML = `
+                    <i class="fas fa-file"></i>
+                    <h3>${fileInput.files[0].name}</h3>
+                    <p>Ready to analyze</p>
+                `;
+            }
+        }
+
+        // Analyze Resume
+        analyzeBtn.addEventListener('click', async () => {
+            if (!fileInput.files.length) {
+                alert('Please upload a resume first!');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('resume', fileInput.files[0]);
+
+            try {
+                // Show loading state
+                loadingDiv.style.display = 'block';
+                analyzeBtn.disabled = true;
+                resultDiv.style.display = 'none';
+
+                const response = await fetch('http://localhost:5000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Server error');
+                }
+
+                const data = await response.json();
+
+                // Display results
+                loadingDiv.style.display = 'none';
+                analyzeBtn.disabled = false;
+                resultDiv.style.display = 'block';
+                scoreDiv.textContent = data.ats_score;
+                progressBar.style.width = `${data.ats_score}%`;
+                
+                // Format suggestions as list items
+                let suggestionsHTML = '';
+                if (data.suggestions && data.suggestions.length > 0) {
+                    suggestionsHTML = data.suggestions.map(s => `<li>${s}</li>`).join('');
+                } else {
+                    suggestionsHTML = '<li>No specific suggestions available</li>';
+                }
+                
+                feedbackDiv.innerHTML = `
+                    <h3><i class="fas fa-lightbulb"></i> Suggestions:</h3>
+                    <ul>${suggestionsHTML}</ul>
+                `;
+
+                // Scroll to results
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                analyzeBtn.disabled = false;
+                alert('Error analyzing resume. Please try again.');
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

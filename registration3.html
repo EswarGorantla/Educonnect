@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Pitch Competition - Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100"><polygon fill="rgba(255,255,255,0.1)" points="0,0 1000,0 1000,60 0,100"/></svg>');
+            background-size: cover;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: -2rem auto 2rem;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        input.error,
+        select.error {
+            border-color: #e53e3e;
+            background: #fef2f2;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            border-color: #6366f1;
+            background: #f8faff;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+            accent-color: #6366f1;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #5b5bf6 0%, #7c3aed 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Confirmation Card */
+        .confirmation-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 3rem 2.5rem;
+            text-align: center;
+            display: none;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .confirmation-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .payment-link-card {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .payment-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+            word-break: break-all;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+
+
+        .confirmation-details {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .detail-value {
+            color: #1f2937;
+        }
+
+        .confirmation-email {
+            color: #6b7280;
+            margin: 1rem 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(135deg, #5b5bf6 0%, #7c3aed 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .back-btn {
+            background: #f3f4f6;
+            color: #6b7280;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 2rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .form-card {
+                padding: 1.5rem;
+                margin: -1rem 1rem 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="header-content">
+            <h1>Startup Pitch Competition</h1>
+            <p>August 15, 2025 • Delhi • Hybrid</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Registration Form -->
+        <div class="form-card" id="registrationForm">
+            <h2 class="form-title">Present your startup idea to a panel of investors and industry experts</h2>
+            <p style="text-align: center; color: #6b7280; margin-bottom: 2rem; font-size: 1.1rem;">Win funding and mentorship opportunities</p>
+            <form id="summitForm" novalidate>
+                <!-- Personal Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="firstName" name="firstName" required>
+                        <div class="error-message" id="firstNameError">Please enter your first name</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="lastName" name="lastName" required>
+                        <div class="error-message" id="lastNameError">Please enter your last name</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="startupName">Startup Name <span class="required">*</span></label>
+                    <input type="text" id="startupName" name="startupName" required>
+                    <div class="error-message" id="startupNameError">Please enter your startup name</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="pitchTitle">Pitch Title <span class="required">*</span></label>
+                    <input type="text" id="pitchTitle" name="pitchTitle" required placeholder="Brief title for your pitch presentation">
+                    <div class="error-message" id="pitchTitleError">Please enter a pitch title</div>
+                </div>
+
+                <!-- Professional Information -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jobTitle">Your Role <span class="required">*</span></label>
+                        <select id="jobTitle" name="jobTitle" required>
+                            <option value="">Select your role</option>
+                            <option value="founder">Founder</option>
+                            <option value="co-founder">Co-Founder</option>
+                            <option value="ceo">CEO</option>
+                            <option value="cto">CTO</option>
+                            <option value="entrepreneur">Entrepreneur</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="error-message" id="jobTitleError">Please select your role</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="industry">Industry Sector <span class="required">*</span></label>
+                        <select id="industry" name="industry" required>
+                            <option value="">Select industry</option>
+                            <option value="fintech">FinTech</option>
+                            <option value="healthtech">HealthTech</option>
+                            <option value="edtech">EdTech</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="saas">SaaS</option>
+                            <option value="ai-ml">AI/ML</option>
+                            <option value="iot">IoT</option>
+                            <option value="blockchain">Blockchain</option>
+                            <option value="cleantech">CleanTech</option>
+                            <option value="foodtech">FoodTech</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="error-message" id="industryError">Please select an industry</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="fundingStage">Funding Stage <span class="required">*</span></label>
+                    <select id="fundingStage" name="fundingStage" required>
+                        <option value="">Select current stage</option>
+                        <option value="idea">Idea Stage</option>
+                        <option value="pre-seed">Pre-Seed</option>
+                        <option value="seed">Seed</option>
+                        <option value="series-a">Series A</option>
+                        <option value="series-b">Series B+</option>
+                        <option value="bootstrapped">Bootstrapped</option>
+                    </select>
+                    <div class="error-message" id="fundingStageError">Please select your funding stage</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="teamSize">Team Size</label>
+                    <select id="teamSize" name="teamSize">
+                        <option value="">Select team size</option>
+                        <option value="1">Solo Founder</option>
+                        <option value="2-3">2-3 people</option>
+                        <option value="4-10">4-10 people</option>
+                        <option value="11-25">11-25 people</option>
+                        <option value="25+">25+ people</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="pitchDescription">Pitch Description <span class="required">*</span></label>
+                    <textarea id="pitchDescription" name="pitchDescription" rows="4" required 
+                        placeholder="Briefly describe your startup idea, the problem you're solving, and your solution (max 500 characters)"></textarea>
+                    <div class="error-message" id="pitchDescriptionError">Please provide a pitch description</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="attendanceMode">Attendance Mode <span class="required">*</span></label>
+                    <select id="attendanceMode" name="attendanceMode" required>
+                        <option value="">How will you attend?</option>
+                        <option value="in-person">In-Person (Delhi)</option>
+                        <option value="virtual">Virtual (Online)</option>
+                    </select>
+                    <div class="error-message" id="attendanceModeError">Please select attendance mode</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" >
+                    <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                </div>
+
+                <!-- Preferences -->
+                <div class="form-group">
+                    <label for="dietary">Dietary Requirements (for in-person attendees)</label>
+                    <select id="dietary" name="dietary">
+                        <option value="">No restrictions</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="gluten-free">Gluten-free</option>
+                        <option value="dairy-free">Dairy-free</option>
+                        <option value="nut-allergy">Nut allergy</option>
+                        <option value="other">Other (please specify in comments)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>What are you looking for? (Select all that apply)</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="funding" name="goals" value="Funding opportunities">
+                            <label for="funding">Funding opportunities</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="mentorship" name="goals" value="Mentorship">
+                            <label for="mentorship">Mentorship</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="networking" name="goals" value="Networking">
+                            <label for="networking">Networking</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="feedback" name="goals" value="Product feedback">
+                            <label for="feedback">Product feedback</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="partnerships" name="goals" value="Strategic partnerships">
+                            <label for="partnerships">Strategic partnerships</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="exposure" name="goals" value="Media exposure">
+                            <label for="exposure">Media exposure</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="spinner" id="spinner"></span>
+                    <span id="submitText">Submit Pitch Application</span>
+                </button>
+
+                <p style="text-align: center; color: #6b7280; font-size: 0.9rem; margin-top: 1rem;">
+                    <span style="color: #10b981; font-weight: 600;">Free</span> to participate • Selected participants will be notified by email
+                </p>
+            </form>
+        </div>
+
+        <!-- Confirmation Card -->
+        <div class="confirmation-card" id="confirmationCard">
+            <div class="success-icon">✓</div>
+            <h2 class="confirmation-title">Pitch Application Submitted!</h2>
+            
+            <div class="payment-link-card">
+                <h3 style="margin: 0 0 1rem 0; font-size: 1.3rem;">Application Under Review</h3>
+                <p style="margin: 0 0 1rem 0; opacity: 0.9;">Your pitch application is being reviewed by our panel of experts.</p>
+                <div class="payment-link" id="paymentLink" style="background: rgba(255, 255, 255, 0.9); color: #1f2937;">
+                    Application ID: APP-STARTUP-2025-ABC123
+                </div>
+                <p style="margin: 1rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">
+                    Free to participate • Results announced within 48 hours
+                </p>
+            </div>
+            
+            <div class="confirmation-details" id="confirmationDetails">
+                <!-- Details will be populated by JavaScript -->
+            </div>
+            
+            <p class="confirmation-email" id="confirmationEmail">
+                We've sent a confirmation email with next steps to your registered address.
+            </p>
+            
+            <div class="action-buttons">
+                <button class="download-btn" id="proceedPaymentBtn">View Application Status</button>
+                <button class="back-btn" id="backBtn">Submit Another Pitch</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form validation and submission handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('summitForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const spinner = document.getElementById('spinner');
+            const submitText = document.getElementById('submitText');
+            const registrationForm = document.getElementById('registrationForm');
+            const confirmationCard = document.getElementById('confirmationCard');
+
+            // Validation rules
+            const validators = {
+                firstName: (value) => value.trim().length >= 2,
+                lastName: (value) => value.trim().length >= 2,
+                email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()),
+                phone: (value) => !value || /^[\+]?[\d\s\(\)\-]{10,}$/.test(value.replace(/\s/g, '')),
+                startupName: (value) => value.trim().length >= 2,
+                pitchTitle: (value) => value.trim().length >= 5,
+                jobTitle: (value) => value.trim().length > 0,
+                industry: (value) => value.trim().length > 0,
+                fundingStage: (value) => value.trim().length > 0,
+                pitchDescription: (value) => value.trim().length >= 20 && value.trim().length <= 500,
+                attendanceMode: (value) => value.trim().length > 0
+            };
+
+            // Real-time validation
+            Object.keys(validators).forEach(field => {
+                const input = document.getElementById(field);
+                const errorDiv = document.getElementById(field + 'Error');
+
+                input.addEventListener('blur', function() {
+                    validateField(field, input.value, input, errorDiv);
+                });
+
+                input.addEventListener('input', function() {
+                    if (input.classList.contains('error')) {
+                        validateField(field, input.value, input, errorDiv);
+                    }
+                });
+            });
+
+            function validateField(fieldName, value, input, errorDiv) {
+                const isValid = validators[fieldName](value);
+                
+                if (isValid) {
+                    input.classList.remove('error');
+                    errorDiv.classList.remove('show');
+                    return true;
+                } else {
+                    input.classList.add('error');
+                    errorDiv.classList.add('show');
+                    return false;
+                }
+            }
+
+            function validateForm() {
+                let isValid = true;
+                
+                Object.keys(validators).forEach(field => {
+                    const input = document.getElementById(field);
+                    const errorDiv = document.getElementById(field + 'Error');
+                    
+                    if (input.required || input.value) {
+                        if (!validateField(field, input.value, input, errorDiv)) {
+                            isValid = false;
+                        }
+                    }
+                });
+
+                return isValid;
+            }
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    return;
+                }
+
+                // Show loading state
+                submitBtn.disabled = true;
+                spinner.style.display = 'inline-block';
+                submitText.textContent = 'Processing...';
+
+                // Simulate API call
+                setTimeout(() => {
+                    showConfirmation();
+                }, 2000);
+            });
+
+            function showConfirmation() {
+                const formData = new FormData(form);
+                const data = {};
+                
+                // Collect form data
+                for (let [key, value] of formData.entries()) {
+                    if (key === 'goals') {
+                        if (!data.goals) data.goals = [];
+                        data.goals.push(value);
+                    } else {
+                        data[key] = value;
+                    }
+                }
+
+                // Generate random application ID
+                const appId = 'APP-STARTUP-2025-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+                
+                // Update confirmation card
+                document.getElementById('paymentLink').textContent = `Application ID: ${appId}`;
+                document.getElementById('confirmationEmail').innerHTML = 
+                    `We've sent a confirmation email with next steps to <strong>${data.email}</strong>`;
+
+                // Build confirmation details
+                const detailsContainer = document.getElementById('confirmationDetails');
+                detailsContainer.innerHTML = '';
+
+                const details = [
+                    { label: 'Applicant Name', value: `${data.firstName} ${data.lastName}` },
+                    { label: 'Email', value: data.email },
+                    { label: 'Startup Name', value: data.startupName },
+                    { label: 'Pitch Title', value: data.pitchTitle },
+                    { label: 'Role', value: data.jobTitle || 'Not specified' },
+                    { label: 'Industry', value: data.industry || 'Not specified' },
+                    { label: 'Funding Stage', value: data.fundingStage || 'Not specified' },
+                    { label: 'Team Size', value: data.teamSize || 'Not specified' },
+                    { label: 'Attendance Mode', value: data.attendanceMode || 'Not specified' },
+                    { label: 'Goals', value: data.goals ? data.goals.join(', ') : 'None selected' }
+                ];
+
+                details.forEach(detail => {
+                    const detailItem = document.createElement('div');
+                    detailItem.className = 'detail-item';
+                    detailItem.innerHTML = `
+                        <span class="detail-label">${detail.label}:</span>
+                        <span class="detail-value">${detail.value}</span>
+                    `;
+                    detailsContainer.appendChild(detailItem);
+                });
+
+                // Show confirmation card
+                registrationForm.style.display = 'none';
+                confirmationCard.style.display = 'block';
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // View application status button
+            document.getElementById('proceedPaymentBtn').addEventListener('click', function() {
+                const appId = document.getElementById('paymentLink').textContent;
+                alert(`${appId}\n\nStatus: Under Review\n\nOur panel is currently reviewing your pitch application. You will receive an email notification within 48 hours with the results.\n\nNext steps:\n• Selected participants will be contacted for pitch scheduling\n• Finalist presentations will be held on August 15, 2025\n• Winners will receive funding and mentorship opportunities`);
+            });
+
+            // Back button
+            document.getElementById('backBtn').addEventListener('click', function() {
+                // Reset form
+                form.reset();
+                
+                // Clear validation states
+                document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+                document.querySelectorAll('.error-message.show').forEach(el => el.classList.remove('show'));
+                
+                // Reset submit button
+                submitBtn.disabled = false;
+                spinner.style.display = 'none';
+                submitText.textContent = 'Complete Registration';
+                
+                // Show form, hide confirmation
+                confirmationCard.style.display = 'none';
+                registrationForm.style.display = 'block';
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

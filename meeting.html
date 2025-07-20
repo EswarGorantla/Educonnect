@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mock Interview Meeting</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8fafc;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    .meeting-box {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h2 { color: #333; }
+    p { color: #555; }
+    button {
+      margin-top: 20px;
+      background-color: #4f46e5;
+      color: white;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+  <div class="meeting-box">
+    <h2 id="meetingTitle">Mock Interview</h2>
+    <p id="meetingDesc">Connecting you with your interviewer...</p>
+    <button onclick="joinZoom()">Join Zoom Meeting</button>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'technical';
+
+    const roundNames = {
+      'screening': 'Screening Interview',
+      'technical': 'Technical Interview',
+      'managerial': 'Managerial Interview',
+      'hr': 'HR Interview',
+      'final-panel': 'Final Panel Discussion'
+    };
+
+    const zoomLinks = {
+      'screening': 'https://zoom.us/j/1234567890',
+      'technical': 'https://zoom.us/j/2345678901',
+      'managerial': 'https://zoom.us/j/3456789012',
+      'hr': 'https://zoom.us/j/4567890123',
+      'final-panel': 'https://zoom.us/j/5678901234'
+    };
+
+    document.getElementById('meetingTitle').textContent = roundNames[type];
+    document.getElementById('meetingDesc').textContent = `You're about to join a live ${roundNames[type]} session. Be ready to shine!`;
+
+    function joinZoom() {
+      window.open(zoomLinks[type], '_blank');
+    }
+  </script>
+</body>
+</html>

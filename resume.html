@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume and Cover Letter Tips</title>
+    <link rel="icon" href="uid_logo-removebg-preview edited.png" type="image/x-icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            margin-top:0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            height: 60px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            font-size: 16px;
+            height: 45px;
+            width: 120px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            font-weight: 600;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #5b5bf6, #8b5cf6);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 40px;
+            border-radius: 30px;
+            padding: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-text {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .content-container {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 40px;
+            border-radius: 30px;
+            padding: 60px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            color: #4a5568;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .step-container {
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            border-radius: 20px;
+            border-left: 5px solid #6366f1;
+        }
+
+        .step-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .step-content {
+            font-size: 1.1rem;
+            color: #4a5568;
+            line-height: 1.8;
+        }
+
+        .resume-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .resume-type {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .resume-type:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: #6366f1;
+        }
+
+        .resume-type h3 {
+            color: #6366f1;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .custom-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .format-images {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+
+        .custom-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #6366f1;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .format-image {
+            width: 480px;
+            height: 550px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .format-image:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            display: block;
+            margin: 50px auto;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #5b5bf6, #8b5cf6);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .websites-section {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+            padding: 60px;
+            border-radius: 30px;
+            margin: 40px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 50px;
+        }
+
+        .websites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .website-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .website-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border-color: #6366f1;
+        }
+
+        .website-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-size: 2rem;
+        }
+
+        .website-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #2d3748;
+        }
+
+        .website-card p {
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .visit-button {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .visit-button:hover {
+            background: linear-gradient(135deg, #5b5bf6, #8b5cf6);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .cover-letter-section {
+            margin-top: 80px;
+            padding-top: 60px;
+            border-top: 3px solid #6366f1;
+        }
+
+        .cover-letter-image {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            display: block;
+            margin: 40px auto;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin-top: 60px;
+        }
+
+        .footer a {
+            color: #6366f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #8b5cf6;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px 20px;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .format-images {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .content-container {
+                margin: 20px;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div style="display: flex; align-items: center;">
+            <img  style="font-size: 2rem; color: #5558ff; margin-right: 15px;height: 50px;">
+            <span style="font-size: 1.5rem; font-weight: 700; color: #2d3748;">EduConnect</span>
+        </div>
+        <button class="back-button" onclick="history.back()">
+            <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>Back
+        </button>
+    </div>
+
+    <div class="hero-section">
+        <div class="hero-text">
+            <h1 class="hero-title">
+                Kickstart Your<br>
+                Career with<br>
+                Powerful Resume<br>
+                and Cover Letter!
+            </h1>
+        </div>
+        <div class="hero-image">
+            <img src="resume gif.gif" alt="resume gif" style="width: 500px; height: 300px; border-radius: 20px; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); animation: float 3s ease-in-out infinite;">
+        </div>
+    </div>
+    
+    <div class="content-container">
+        <p class="intro-text">
+            A resume is a short and concise summary of your work experience and education. During recruitment, employers or recruiters compare tens, hundreds, and sometimes even thousands of resumes with each other. All this to find the best candidates.
+        </p>
+        <p class="intro-text" style="font-weight: 600; color: #2d3748;">
+            You only have one chance to make an electrifying impression. Here's what you should do, step by step:
+        </p>
+
+        <div class="step-container">
+            <h2 class="step-title">
+                <span class="step-number">1</span>
+                Choose the right resume format for you
+            </h2>
+            <p class="step-content">
+                There are three types of resumes. Depending on your professional experience and the industry you are applying to, one of them will be the best for you. Are you applying for multiple positions in various companies or industries? You can consider more than one resume format.
+            </p>
+            
+            <div class="resume-types">
+                <div class="resume-type">
+                    <h3><i class="fas fa-clock" style="margin-right: 10px;"></i>Reverse Chronological (Most Common)</h3>
+                    <p>Lists work experience from most recent to oldest.</p>
+                </div>
+                <div class="resume-type">
+                    <h3><i class="fas fa-cogs" style="margin-right: 10px;"></i>Functional</h3>
+                    <p>Focuses on skills rather than experience (good for career changers).</p>
+                </div>
+                <div class="resume-type">
+                    <h3><i class="fas fa-layer-group" style="margin-right: 10px;"></i>Combination</h3>
+                    <p>Mixes both chronological and functional styles.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="format-images">
+            <div class="format-image">
+                <img src="chronological.png" alt="Chronological Resume Format" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+            </div>
+            <div class="format-image">
+                <img src="functional.png" alt="Functional Resume Format" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+            </div>
+            <div class="format-image">
+                <img src="combination.png" alt="Combination Resume Format" style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+            </div>
+        </div>
+
+        <div class="step-container">
+            <h2 class="step-title">
+                <span class="step-number">2</span>
+                Add Contact Information
+            </h2>
+            <p class="step-content">At the top of your resume, include:</p>
+            <ul class="custom-list">
+                <li>Your Full Name</li>
+                <li>Your Phone Number</li>
+                <li>Your Email Address (professional one)</li>
+                <li>Your LinkedIn Profile (optional but recommended)</li>
+                <li>Your GitHub or Portfolio (if applicable)</li>
+            </ul>
+        </div>
+
+        <div class="step-container">
+            <h2 class="step-title">
+                <span class="step-number">3</span>
+                Write a Strong Summary or Objective
+            </h2>
+            <ul class="custom-list">
+                <li><strong>Summary (if you have experience):</strong> A brief statement highlighting your skills and experience.</li>
+                <li><strong>Objective (if you're new to the industry):</strong> A short statement about your career goals and what you bring to the table.</li>
+            </ul>
+        </div>
+
+        <div class="step-container">
+            <h2 class="step-title">
+                <span class="step-number">4</span>
+                List Your Work Experience (if applicable)
+            </h2>
+            <p class="step-content">Include:</p>
+            <ul class="custom-list">
+                <li>Job Title – Company Name, Location</li>
+                <li>Dates of Employment (Month & Year)</li>
+                <li>Key Responsibilities & Achievements (use bullet points and action verbs)</li>
+            </ul>
+        </div>
+
+        <div class="step-container">
+            <h2 class="step-title">
+                <span class="step-number">5</span>
+                Highlight Your Education
+            </h2>
+            <p class="step-content">
+                Make a list of the educational institutions you attended. Start with the most recent. If you are starting your professional career or have not graduated from university, provide information about the completed High School. Add any other educational experiences, such as training programs, community college or summer courses, seminars, and so on.
+            </p>
+        </div>
+
+        <div class="step-container">
+            <h2 class="step-title">
+                <span class="step-number">6</span>
+                Showcase Your Skills
+            </h2>
+            <ul class="custom-list">
+                <li>Technical Skills (Programming languages, tools, frameworks)</li>
+                <li>Soft Skills (Communication, teamwork, problem-solving)</li>
+                <li>Certifications (if relevant)</li>
+            </ul>
+        </div>
+
+        <div class="step-container">
+            <h2 class="step-title">
+                <span class="step-number">7</span>
+                Format & Proofread
+            </h2>
+            <ul class="custom-list">
+                <li>Keep it 1 page (unless you have a lot of experience).</li>
+                <li>Use clear fonts like Arial, Calibri, or Times New Roman.</li>
+                <li>Keep margins & spacing consistent.</li>
+                <li>Proofread for grammar and spelling errors.</li>
+            </ul>
+        </div>
+
+        <a href='https://www.overleaf.com/gallery/tagged/cv' target="_blank" class="cta-button">
+            <i class="fas fa-edit" style="margin-right: 10px;"></i>
+            Personalise Your Own Resume
+        </a>
+
+        <div class="websites-section">
+            <h1 class="section-title">Best Resume-Building Websites</h1>
+            <div class="websites-grid">
+                <div class="website-card">
+                    <img src="io.png" alt="Resume.io" style="width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 15px;">
+                    <h3>Resume.io</h3>
+                    <p>Professional resume templates with AI-powered suggestions.</p>
+                    <a href="https://www.resume.io" target="_blank" class="visit-button">Visit</a>
+                </div>
+
+                <div class="website-card">
+                    <div class="website-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Zety</h3>
+                    <p>Customizable resume templates with expert guidance.</p>
+                    <a href="https://zety.com/resume-builder" target="_blank" class="visit-button">Visit</a>
+                </div>
+
+                <div class="website-card">
+                    <div class="website-icon">
+                        <i class="fab fa-microsoft"></i>
+                    </div>
+                    <h3>Microsoft Create</h3>
+                    <p>Free resume templates with Microsoft's design tools.</p>
+                    <a href="https://create.microsoft.com/en-us/templates/resumes-and-cover-letters" target="_blank" class="visit-button">Visit</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="cover-letter-section">
+            <h1 class="section-title">How to write a Cover Letter?</h1>
+            
+            <div class="step-container">
+                <h2 class="step-title">
+                    <span class="step-number"><i class="fas fa-play"></i></span>
+                    Introduction
+                </h2>
+                <p class="step-content">
+                    To highlight that you are the ideal candidate, it is important to mention in the introduction the most valuable skills you possess that are also mentioned in the job ad. Sometimes it might be important to mention the job you are applying for, job application number (if provided) and where you learned about the open position.
+                </p>
+            </div>
+
+            <div class="step-container">
+                <h2 class="step-title">
+                    <span class="step-number"><i class="fas fa-align-left"></i></span>
+                    Body
+                </h2>
+                <p class="step-content">
+                    In one or two longer paragraphs explain your interest for this position and how your previous achievements and experience will meet the expectations listed in the job ad.
+                </p>
+            </div>
+
+            <div class="step-container">
+                <h2 class="step-title">
+                    <span class="step-number"><i class="fas fa-flag-checkered"></i></span>
+                    Conclusion
+                </h2>
+                <p class="step-content">The conclusion of your cover letter has three main goals:</p>
+                <ul class="custom-list">
+                    <li>Express your gratitude towards the reader and thank them for their time.</li>
+                    <li>Mention again your interest for the position.</li>
+                    <li>A call to action (ex. I look forward to discussing with you how I can contribute to your organization's success.)</li>
+                </ul>
+                <p class="step-content">
+                    A strong call to action is important because this will be the last part the recruiter or employer will read and you will leave the reader with the impression that you are the perfect match to be called for an interview.
+                </p>
+            </div>
+
+            <div class="step-container">
+                <h2 class="step-title">
+                    <span class="step-number"><i class="fas fa-signature"></i></span>
+                    How to end a Cover letter?
+                </h2>
+                <p class="step-content">
+                    A cover letter is a formal, professional document, therefore you should close your cover letter with a formal closing expression:
+                </p>
+                <ul class="custom-list">
+                    <li>Sincerely</li>
+                    <li>Sincerely yours</li>
+                    <li>With best regards</li>
+                    <li>Best regards</li>
+                    <li>Kind regards</li>
+                    <li>Respectfully yours</li>
+                </ul>
+            </div>
+
+            <div style="text-align: center; margin: 50px 0;">
+                <img src="coverletter.avif" alt="Cover Letter Template" style="width: 100%; max-width: 800px; height: auto; border-radius: 20px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);">
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 EduConnect. All Rights Reserved.</p>
+        <p style="margin-top: 10px;">
+            <a href="privacy-policy.html">Privacy Policy</a> | 
+            <a href="terms-of-service.html">Terms of Service</a> | 
+            <a href="contact.html">Contact Us</a>
+        </p>
+    </footer>
+</body>
+</html>

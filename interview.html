@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Interview Room</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    
+    .meeting-room {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+    }
+    
+    .join-btn {
+      background: #6366f1;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background 0.3s;
+    }
+    
+    .join-btn:hover {
+      background: #5856eb;
+    }
+    
+    .join-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    .record-btn {
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background 0.3s;
+    }
+    
+    .record-btn:hover:not(:disabled) {
+      background: #b91c1c;
+    }
+    
+    .record-btn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    
+    .stop-btn {
+      background: #059669;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background 0.3s;
+    }
+    
+    .stop-btn:hover:not(:disabled) {
+      background: #047857;
+    }
+    
+    .release-btn {
+      background: #f59e0b;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px;
+      transition: background 0.3s;
+    }
+    
+    .release-btn:hover:not(:disabled) {
+      background: #d97706;
+    }
+    
+    input {
+      padding: 10px;
+      margin: 10px;
+      width: 80%;
+      font-size: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+    
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+    
+    .success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+    
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    
+    .camera-status {
+      background: #ddd6fe;
+      color: #5b21b6;
+      border: 1px solid #c4b5fd;
+      margin: 15px 0;
+      padding: 15px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    
+    .debug {
+      background: #f3f4f6;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      text-align: left;
+      font-size: 12px;
+      color: #4b5563;
+    }
+    
+    video {
+      width: 100%;
+      max-width: 400px;
+      border: 2px solid #444;
+      border-radius: 8px;
+      margin: 20px 0;
+      background: #000;
+    }
+    
+    .recording-section {
+      margin-top: 30px;
+      padding: 20px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+    }
+    
+    .recording-indicator {
+      display: none;
+      color: #dc2626;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    
+    .recording-indicator.active {
+      display: block;
+    }
+    
+    .recording-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #dc2626;
+      border-radius: 50%;
+      margin-right: 5px;
+      animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0.3; }
+    }
+
+    .workflow-guide {
+      background: #fef3c7;
+      border: 2px solid #fbbf24;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 20px 0;
+      text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="meeting-room">
+    <h1>Welcome to your Interview</h1>
+    <p>This is your dedicated interview room for the <strong id="interviewTypeDisplay">...</strong> round.</p>
+    
+    <div class="workflow-guide">
+      <h4>🎯 How to Use This System:</h4>
+      <p><strong>IMPORTANT:</strong> Your camera can only be used by ONE app at a time!</p>
+      <ol>
+        <li><strong>For Practice:</strong> Click "Test Camera" → Practice → "Release Camera" → Join Zoom</li>
+        <li><strong>For Real Interview:</strong> Skip camera test and directly "Join Zoom Meeting"</li>
+      </ol>
+    </div>
+
+    <div>
+      <input type="text" id="userName" placeholder="Your Name" required />
+      <input type="email" id="userEmail" placeholder="Your Email" required />
+      <button class="join-btn" onclick="joinZoom()" id="joinButton">Join Zoom Meeting</button>
+      <div class="status" id="statusMessage"></div>
+      
+      <div class="camera-status" id="cameraStatus">
+        📹 Camera Status: <span id="cameraStatusText">Available for Zoom</span>
+      </div>
+      
+      <div class="recording-section">
+        <h3>🎥 Camera Test & Recording</h3>
+        <video id="preview" autoplay muted playsinline></video>
+        <div class="recording-indicator" id="recordingIndicator">
+          <span class="recording-dot"></span>Recording... <span id="timer">00:00</span>
+        </div>
+        
+        <div>
+          <button class="join-btn" onclick="testCamera()" id="testBtn">📹 Test Camera</button>
+          <button class="record-btn" onclick="startRecording()" id="startBtn" disabled>🔴 Start Recording</button>
+          <button class="stop-btn" onclick="stopRecording()" id="stopBtn" disabled>⏹️ Stop Recording</button>
+          <button class="release-btn" onclick="releaseCamera()" id="releaseBtn" disabled>🚀 Release for Zoom</button>
+        </div>
+        
+        <div class="status" id="recordStatus"></div>
+      </div>
+      
+      <div class="debug" id="debugInfo">
+        <strong>Debug Information:</strong><br>
+        EmailJS Status: <span id="emailjsStatus">Loading...</span><br>
+        Service ID: service_wr2dflm<br>
+        Template ID: template_m76itlo<br>
+        Public Key: xQ4tuHIVobxgXk7Ld<br>
+        Recording Status: <span id="recordingStatus">Ready</span><br>
+        Camera Tracks: <span id="trackStatus">None</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Recording variables
+    let mediaRecorder, recordedChunks = [], stream = null;
+    let recordingStartTime = null;
+    let timerInterval = null;
+
+    // Function to update UI status
+    function updateCameraStatus(status, description) {
+      document.getElementById('cameraStatusText').textContent = description;
+      document.getElementById('recordingStatus').textContent = status;
+      
+      // Update track status for debugging
+      if (stream) {
+        const videoTracks = stream.getVideoTracks().length;
+        const audioTracks = stream.getAudioTracks().length;
+        document.getElementById('trackStatus').textContent = `Video: ${videoTracks}, Audio: ${audioTracks}`;
+      } else {
+        document.getElementById('trackStatus').textContent = 'None';
+      }
+    }
+
+    // Function to load EmailJS dynamically
+    function loadEmailJS() {
+      return new Promise((resolve, reject) => {
+        // Try primary CDN first
+        const script1 = document.createElement('script');
+        script1.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
+        script1.onload = () => {
+          console.log('EmailJS loaded from jsDelivr');
+          resolve();
+        };
+        script1.onerror = () => {
+          console.log('jsDelivr failed, trying alternative CDN...');
+          // Try alternative CDN
+          const script2 = document.createElement('script');
+          script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/emailjs-com/3.2.0/email.min.js';
+          script2.onload = () => {
+            console.log('EmailJS loaded from Cloudflare');
+            resolve();
+          };
+          script2.onerror = () => {
+            console.error('Both CDNs failed');
+            reject(new Error('Failed to load EmailJS from any CDN'));
+          };
+          document.head.appendChild(script2);
+        };
+        document.head.appendChild(script1);
+      });
+    }
+
+    // Load EmailJS and initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      const statusSpan = document.getElementById('emailjsStatus');
+      statusSpan.textContent = 'Loading...';
+      
+      loadEmailJS()
+        .then(() => {
+          // Wait a bit for emailjs to be available
+          setTimeout(() => {
+            if (typeof emailjs !== 'undefined') {
+              statusSpan.textContent = 'Loaded ✅';
+              statusSpan.style.color = 'green';
+              
+              try {
+                emailjs.init("xQ4tuHIVobxgXk7Ld");
+                console.log('EmailJS initialized successfully');
+              } catch (error) {
+                console.error('EmailJS initialization failed:', error);
+                statusSpan.textContent = 'Init Failed ❌';
+                statusSpan.style.color = 'red';
+              }
+            } else {
+              statusSpan.textContent = 'Still not available ❌';
+              statusSpan.style.color = 'red';
+            }
+          }, 500);
+        })
+        .catch((error) => {
+          console.error('Failed to load EmailJS:', error);
+          statusSpan.textContent = 'Load Failed ❌';
+          statusSpan.style.color = 'red';
+        });
+
+      // Initialize camera status
+      updateCameraStatus('Ready', 'Available for Zoom');
+    });
+    
+    // Get interview type from URL
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'General';
+    document.getElementById('interviewTypeDisplay').textContent = type.replace('-', ' ').toUpperCase();
+    
+    // Status message function
+    function showStatus(message, isError = false, targetId = 'statusMessage') {
+      const statusDiv = document.getElementById(targetId);
+      statusDiv.textContent = message;
+      statusDiv.className = `status ${isError ? 'error' : 'success'}`;
+      statusDiv.style.display = 'block';
+      
+      setTimeout(() => {
+        statusDiv.style.display = 'none';
+      }, 5000);
+    }
+    
+    function joinZoom() {
+      const name = document.getElementById('userName').value.trim();
+      const email = document.getElementById('userEmail').value.trim();
+      const interviewType = type.replace('-', ' ').toUpperCase();
+      const zoomLink = "https://us05web.zoom.us/j/8496394760?pwd=vUId7hxSl1CeHvCpMykUiBQdGQyRXE.1";
+      const joinButton = document.getElementById('joinButton');
+      
+      console.log('Attempting to send email to:', email);
+      console.log('Name:', name);
+      console.log('Interview type:', interviewType);
+      
+      if (!name || !email) {
+        showStatus("Please enter your name and email.", true);
+        return;
+      }
+      
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showStatus("Please enter a valid email address.", true);
+        return;
+      }
+      
+      // Check if EmailJS is available
+      if (typeof emailjs === 'undefined') {
+        showStatus("EmailJS failed to load. Please refresh the page.", true);
+        return;
+      }
+      
+      // Disable button while sending
+      joinButton.disabled = true;
+      joinButton.textContent = "Sending email...";
+      
+      // Template parameters - Updated to match common EmailJS template structure
+      const templateParams = {
+        to_name: name,
+        to_email: email,
+        from_name: "Interview System",
+        message: `Hello ${name},
+
+Your ${interviewType} interview is ready to begin!
+
+Please join the meeting using this Zoom link:
+${zoomLink}
+
+We look forward to speaking with you.
+
+Best regards,
+Interview Team`,
+        zoom_link: zoomLink,
+        interview_type: interviewType
+      };
+      
+      console.log('Template parameters:', templateParams);
+      
+      // Send email
+      emailjs.send("service_wr2dflm", "template_m76itlo", templateParams)
+        .then((response) => {
+          console.log('SUCCESS!', response.status, response.text);
+          showStatus(`✅ Zoom link sent to ${email}! Opening meeting...`);
+          
+          // Wait a moment then open Zoom
+          setTimeout(() => {
+            window.open(zoomLink, "_blank");
+          }, 2000);
+        })
+        .catch((error) => {
+          console.error("EmailJS error:", error);
+          console.error("Full error object:", JSON.stringify(error, null, 2));
+          
+          let errorMessage = "Failed to send email. ";
+          if (error.status === 400) {
+            errorMessage += "Check your template parameters.";
+          } else if (error.status === 401) {
+            errorMessage += "Authentication failed. Check your public key.";
+          } else if (error.status === 404) {
+            errorMessage += "Service or template not found.";
+          } else {
+            errorMessage += error.text || error.message || "Unknown error.";
+          }
+          
+          showStatus(`❌ ${errorMessage}`, true);
+        })
+        .finally(() => {
+          // Re-enable button
+          joinButton.disabled = false;
+          joinButton.textContent = "Join Zoom Meeting";
+        });
+    }
+
+    // Camera test function
+    async function testCamera() {
+      console.log('Starting camera test...');
+      updateCameraStatus('Starting camera...', 'Starting...');
+      
+      try {
+        // Get user media
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            width: { ideal: 640 }, 
+            height: { ideal: 480 }
+          }, 
+          audio: true 
+        });
+        
+        console.log('Camera stream obtained:', stream);
+        
+        // Show preview
+        const video = document.getElementById("preview");
+        video.srcObject = stream;
+        
+        // Update UI
+        document.getElementById('testBtn').disabled = true;
+        document.getElementById('startBtn').disabled = false;
+        document.getElementById('releaseBtn').disabled = false;
+        
+        updateCameraStatus('Camera active (BUSY)', '⚠️ Camera in use by browser - NOT available for Zoom');
+        showStatus("📹 Camera test started! You can now record or release for Zoom.", false, 'recordStatus');
+        
+      } catch (error) {
+        console.error('Error starting camera:', error);
+        updateCameraStatus('Camera error', 'Error accessing camera');
+        
+        let errorMsg = 'Failed to start camera: ';
+        if (error.name === 'NotAllowedError') {
+          errorMsg += 'Please allow camera and microphone access in your browser.';
+        } else if (error.name === 'NotFoundError') {
+          errorMsg += 'Camera or microphone not found.';
+        } else if (error.name === 'NotReadableError') {
+          errorMsg += 'Camera is being used by another application.';
+        } else {
+          errorMsg += error.message;
+        }
+        
+        showStatus(errorMsg, true, 'recordStatus');
+      }
+    }
+
+    // Release camera function
+    function releaseCamera() {
+      console.log('Releasing camera...');
+      
+      // Stop all tracks to completely release camera
+      if (stream) {
+        stream.getTracks().forEach(track => {
+          console.log(`Stopping ${track.kind} track:`, track);
+          track.stop();
+        });
+        stream = null;
+      }
+      
+      // Stop recording if active
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+      }
+      
+      // Clear timer
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      
+      // Clear video preview
+      const video = document.getElementById("preview");
+      video.srcObject = null;
+      
+      // Reset UI
+      document.getElementById('testBtn').disabled = false;
+      document.getElementById('startBtn').disabled = true;
+      document.getElementById('stopBtn').disabled = true;
+      document.getElementById('releaseBtn').disabled = true;
+      document.getElementById('recordingIndicator').classList.remove('active');
+      
+      updateCameraStatus('Ready', '✅ Available for Zoom');
+      showStatus("✅ Camera released! Now you can join Zoom and use your camera there.", false, 'recordStatus');
+      
+      console.log('Camera completely released');
+    }
+
+    // Recording functions
+    async function startRecording() {
+      if (!stream) {
+        showStatus("Please test camera first!", true, 'recordStatus');
+        return;
+      }
+      
+      console.log('Starting recording...');
+      updateCameraStatus('Recording...', '🔴 Recording in progress - NOT available for Zoom');
+      
+      try {
+        // Reset recorded chunks
+        recordedChunks = [];
+
+        // Create MediaRecorder
+        let options = { mimeType: 'video/webm' };
+        if (!MediaRecorder.isTypeSupported('video/webm')) {
+          options = { mimeType: 'video/mp4' };
+        }
+        
+        mediaRecorder = new MediaRecorder(stream, options);
+        
+        mediaRecorder.ondataavailable = e => {
+          if (e.data.size > 0) {
+            recordedChunks.push(e.data);
+            console.log('Recording data chunk:', e.data.size, 'bytes');
+          }
+        };
+        
+        mediaRecorder.onstop = saveVideo;
+        
+        // Start recording
+        mediaRecorder.start(1000); // Collect data every second
+        console.log('MediaRecorder started');
+        
+        // Update UI
+        document.getElementById('startBtn').disabled = true;
+        document.getElementById('stopBtn').disabled = false;
+        document.getElementById('releaseBtn').disabled = true;
+        document.getElementById('recordingIndicator').classList.add('active');
+        
+        // Start timer
+        recordingStartTime = Date.now();
+        timerInterval = setInterval(updateTimer, 1000);
+        
+        showStatus("🔴 Recording started!", false, 'recordStatus');
+        
+      } catch (error) {
+        console.error('Error starting recording:', error);
+        updateCameraStatus('Recording error', 'Error starting recording');
+        showStatus('Failed to start recording: ' + error.message, true, 'recordStatus');
+      }
+    }
+
+    function stopRecording() {
+      console.log('Stopping recording...');
+      
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        console.log('MediaRecorder stopped');
+      }
+      
+      // Clear timer
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      
+      // Update UI
+      document.getElementById('startBtn').disabled = false;
+      document.getElementById('stopBtn').disabled = true;
+      document.getElementById('releaseBtn').disabled = false;
+      document.getElementById('recordingIndicator').classList.remove('active');
+      
+      updateCameraStatus('Saving video...', 'Processing recording...');
+      showStatus("⏹️ Recording stopped. Saving video...", false, 'recordStatus');
+    }
+
+    function saveVideo() {
+      console.log('Saving video, chunks:', recordedChunks.length);
+      
+      if (recordedChunks.length === 0) {
+        showStatus("❌ No video data recorded.", true, 'recordStatus');
+        updateCameraStatus('Camera active', '⚠️ Camera in use by browser - NOT available for Zoom');
+        return;
+      }
+      
+      // Create blob
+      const mimeType = mediaRecorder.mimeType || 'video/webm';
+      const blob = new Blob(recordedChunks, { type: mimeType });
+      console.log('Video blob created:', blob.size, 'bytes');
+      
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `interview-recording-${Date.now()}.${mimeType.includes('mp4') ? 'mp4' : 'webm'}`;
+      
+      // Trigger download
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      
+      // Cleanup
+      URL.revokeObjectURL(url);
+      
+      const fileSize = (blob.size / (1024 * 1024)).toFixed(2);
+      updateCameraStatus('Camera active', '⚠️ Camera in use by browser - NOT available for Zoom');
+      showStatus(`✅ Video saved! Size: ${fileSize}MB. Click "Release for Zoom" to free camera.`, false, 'recordStatus');
+    }
+
+    function updateTimer() {
+      if (recordingStartTime) {
+        const elapsed = Math.floor((Date.now() - recordingStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+        const seconds = (elapsed % 60).toString().padStart(2, '0');
+        document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+      }
+    }
+  </script>
+</body>
+</html>

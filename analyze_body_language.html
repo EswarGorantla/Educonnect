@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧍 Interview Body Language Feedback</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .video-section {
+            position: relative;
+        }
+
+        #videoElement {
+            width: 100%;
+            max-width: 640px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            background: #000;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(86, 171, 47, 0.3);
+        }
+
+        .btn-stop {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%);
+            color: white;
+        }
+
+        .btn-stop:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .feedback-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            height: fit-content;
+        }
+
+        .status {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .status.ready {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+
+        .status.analyzing {
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            color: white;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .feedback-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .feedback-item {
+            padding: 15px;
+            border-left: 4px solid #ff6b6b;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-time {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .feedback-message {
+            margin-top: 5px;
+            color: #333;
+        }
+
+        .canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        #canvasElement {
+            border-radius: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .no-camera {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧍 Interview Body Language Feedback</h1>
+            <p>Real-time posture and attention analysis for better interviews</p>
+        </div>
+
+        <div class="main-content">
+            <div class="video-section">
+                <div id="loadingMessage" class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading MediaPipe models...</p>
+                </div>
+                
+                <video id="videoElement" autoplay muted playsinline style="display: none;"></video>
+                <div class="canvas-container">
+                    <canvas id="canvasElement"></canvas>
+                </div>
+
+                <div class="controls">
+                    <button id="startBtn" class="btn btn-start" disabled>Start Analysis</button>
+                    <button id="stopBtn" class="btn btn-stop" disabled>Stop Analysis</button>
+                    <button id="downloadBtn" class="btn btn-download" disabled>Download Report</button>
+                </div>
+            </div>
+
+            <div class="feedback-panel">
+                <div id="status" class="status ready">Ready to Start</div>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div id="sessionTime" class="stat-number">0:00</div>
+                        <div class="stat-label">Session Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div id="issueCount" class="stat-number">0</div>
+                        <div class="stat-label">Issues Detected</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 15px; color: #333;">Live Feedback</h3>
+                <div id="feedbackList" class="feedback-list">
+                    <p style="text-align: center; color: #666; padding: 20px;">No feedback yet. Start analysis to begin.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic/holistic.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+
+    <script>
+        class InterviewFeedbackSystem {
+            constructor() {
+                this.video = document.getElementById('videoElement');
+                this.canvas = document.getElementById('canvasElement');
+                this.ctx = this.canvas.getContext('2d');
+                this.isRunning = false;
+                this.feedbackData = [];
+                this.startTime = null;
+                this.sessionTimer = null;
+                
+                this.holistic = null;
+                this.initializeElements();
+                this.loadMediaPipe();
+            }
+
+            initializeElements() {
+                this.startBtn = document.getElementById('startBtn');
+                this.stopBtn = document.getElementById('stopBtn');
+                this.downloadBtn = document.getElementById('downloadBtn');
+                this.status = document.getElementById('status');
+                this.sessionTimeEl = document.getElementById('sessionTime');
+                this.issueCountEl = document.getElementById('issueCount');
+                this.feedbackListEl = document.getElementById('feedbackList');
+                this.loadingMessage = document.getElementById('loadingMessage');
+
+                this.startBtn.addEventListener('click', () => this.startAnalysis());
+                this.stopBtn.addEventListener('click', () => this.stopAnalysis());
+                this.downloadBtn.addEventListener('click', () => this.downloadReport());
+            }
+
+            async loadMediaPipe() {
+                try {
+                    // Initialize MediaPipe Holistic
+                    this.holistic = new Holistic({
+                        locateFile: (file) => {
+                            return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic/${file}`;
+                        }
+                    });
+
+                    this.holistic.setOptions({
+                        modelComplexity: 1,
+                        smoothLandmarks: true,
+                        enableSegmentation: false,
+                        smoothSegmentation: false,
+                        refineFaceLandmarks: true,
+                        minDetectionConfidence: 0.5,
+                        minTrackingConfidence: 0.5
+                    });
+
+                    this.holistic.onResults((results) => this.onResults(results));
+
+                    await this.setupCamera();
+                    this.loadingMessage.style.display = 'none';
+                    this.video.style.display = 'block';
+                    this.startBtn.disabled = false;
+                    this.status.textContent = 'Ready to Start';
+                    this.status.className = 'status ready';
+                    
+                } catch (error) {
+                    console.error('Error loading MediaPipe:', error);
+                    this.showError('Failed to load MediaPipe models. Please refresh the page.');
+                }
+            }
+
+            async setupCamera() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ 
+                        video: { width: 640, height: 480 }
+                    });
+                    this.video.srcObject = stream;
+                    
+                    this.video.addEventListener('loadedmetadata', () => {
+                        this.canvas.width = this.video.videoWidth;
+                        this.canvas.height = this.video.videoHeight;
+                    });
+                    
+                } catch (error) {
+                    console.error('Error accessing camera:', error);
+                    this.showError('Unable to access camera. Please ensure you have granted camera permissions.');
+                }
+            }
+
+            showError(message) {
+                this.loadingMessage.innerHTML = `
+                    <div class="no-camera">
+                        <h3>❌ ${message}</h3>
+                    </div>
+                `;
+            }
+
+            async startAnalysis() {
+                if (!this.holistic) return;
+                
+                this.isRunning = true;
+                this.startTime = Date.now();
+                this.feedbackData = [];
+                
+                this.startBtn.disabled = true;
+                this.stopBtn.disabled = false;
+                this.downloadBtn.disabled = true;
+                
+                this.status.textContent = 'Analyzing...';
+                this.status.className = 'status analyzing';
+                
+                this.feedbackListEl.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">Analysis started...</p>';
+                
+                this.sessionTimer = setInterval(() => {
+                    this.updateSessionTime();
+                }, 1000);
+                
+                this.processFrame();
+            }
+
+            stopAnalysis() {
+                this.isRunning = false;
+                clearInterval(this.sessionTimer);
+                
+                this.startBtn.disabled = false;
+                this.stopBtn.disabled = true;
+                this.downloadBtn.disabled = false;
+                
+                this.status.textContent = 'Analysis Complete';
+                this.status.className = 'status ready';
+            }
+
+            async processFrame() {
+                if (!this.isRunning) return;
+                
+                if (this.video.readyState === 4) {
+                    await this.holistic.send({ image: this.video });
+                }
+                
+                requestAnimationFrame(() => this.processFrame());
+            }
+
+            onResults(results) {
+                // Clear canvas
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw landmarks
+                if (results.poseLandmarks) {
+                    this.drawLandmarks(results.poseLandmarks, '#00FF00');
+                    this.analyzePose(results.poseLandmarks);
+                }
+                
+                if (results.leftHandLandmarks) {
+                    this.drawLandmarks(results.leftHandLandmarks, '#FF0000');
+                }
+                
+                if (results.rightHandLandmarks) {
+                    this.drawLandmarks(results.rightHandLandmarks, '#0000FF');
+                }
+                
+                if (results.faceLandmarks) {
+                    this.drawFaceLandmarks(results.faceLandmarks);
+                }
+            }
+
+            drawLandmarks(landmarks, color) {
+                this.ctx.fillStyle = color;
+                this.ctx.strokeStyle = color;
+                this.ctx.lineWidth = 2;
+                
+                landmarks.forEach((landmark, index) => {
+                    const x = landmark.x * this.canvas.width;
+                    const y = landmark.y * this.canvas.height;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                    this.ctx.fill();
+                });
+            }
+
+            drawFaceLandmarks(landmarks) {
+                this.ctx.fillStyle = '#FFFF00';
+                landmarks.forEach((landmark) => {
+                    const x = landmark.x * this.canvas.width;
+                    const y = landmark.y * this.canvas.height;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.arc(x, y, 1, 0, 2 * Math.PI);
+                    this.ctx.fill();
+                });
+            }
+
+            analyzePose(landmarks) {
+                if (!landmarks || landmarks.length === 0) return;
+                
+                const leftShoulder = landmarks[11];
+                const rightShoulder = landmarks[12];
+                const nose = landmarks[0];
+                
+                const currentTime = (Date.now() - this.startTime) / 1000;
+                
+                // Detect slouching or uneven shoulders
+                const shoulderDiff = Math.abs(leftShoulder.y - rightShoulder.y);
+                if (shoulderDiff > 0.1) {
+                    this.addFeedback(currentTime, "Slouching or uneven shoulders detected");
+                }
+                
+                // Detect looking away
+                if (nose.x < 0.35) {
+                    this.addFeedback(currentTime, "Looking away to the left");
+                } else if (nose.x > 0.65) {
+                    this.addFeedback(currentTime, "Looking away to the right");
+                }
+            }
+
+            addFeedback(timestamp, issue) {
+                const feedback = {
+                    timestamp: Math.round(timestamp * 100) / 100,
+                    issue: issue
+                };
+                
+                this.feedbackData.push(feedback);
+                this.updateFeedbackUI(feedback);
+                this.issueCountEl.textContent = this.feedbackData.length;
+            }
+
+            updateFeedbackUI(feedback) {
+                if (this.feedbackListEl.innerHTML.includes('No feedback yet') || 
+                    this.feedbackListEl.innerHTML.includes('Analysis started')) {
+                    this.feedbackListEl.innerHTML = '';
+                }
+                
+                const feedbackElement = document.createElement('div');
+                feedbackElement.className = 'feedback-item';
+                feedbackElement.innerHTML = `
+                    <div class="feedback-time">${this.formatTime(feedback.timestamp)}</div>
+                    <div class="feedback-message">${feedback.issue}</div>
+                `;
+                
+                this.feedbackListEl.insertBefore(feedbackElement, this.feedbackListEl.firstChild);
+                
+                // Limit to 10 visible items
+                while (this.feedbackListEl.children.length > 10) {
+                    this.feedbackListEl.removeChild(this.feedbackListEl.lastChild);
+                }
+            }
+
+            updateSessionTime() {
+                if (!this.startTime) return;
+                const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                this.sessionTimeEl.textContent = this.formatTime(elapsed);
+            }
+
+            formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+
+            downloadReport() {
+                const report = {
+                    sessionStart: new Date(this.startTime).toISOString(),
+                    duration: Math.floor((Date.now() - this.startTime) / 1000),
+                    totalIssues: this.feedbackData.length,
+                    feedback: this.feedbackData
+                };
+                
+                const blob = new Blob([JSON.stringify(report, null, 2)], { 
+                    type: 'application/json' 
+                });
+                
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `interview-feedback-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+        }
+
+        // Initialize the system when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            new InterviewFeedbackSystem();
+        });
+    </script>
+</body>
+</html>

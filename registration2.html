@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect Platform - Join Now</title>
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        :root {
+            --primary-purple: #6366f1;
+            --primary-hover: #5b5bf6;
+            --secondary-purple: #8b5cf6;
+            --gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --bg-light: #f8fafc;
+            --bg-dark: #2d3748;
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-medium: rgba(0, 0, 0, 0.15);
+            --shadow-purple: rgba(99, 102, 241, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #667eea, #764ba2, #6366f1, #8b5cf6);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            left: 80%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            top: 40%;
+            left: 60%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .setup-notice {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 2px solid #f39c12;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #8b4513;
+        }
+
+        .setup-notice h3 {
+            margin: 0 0 10px 0;
+            color: #d68910;
+        }
+
+        .setup-notice p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .setup-notice code {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        h1 {
+            text-align: center;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 700;
+            text-shadow: none;
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .required {
+            color: #e53e3e;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.8);
+            position: relative;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+            background: white;
+        }
+
+        .error {
+            color: #e53e3e;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+            font-weight: 500;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 18px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--primary-hover), var(--secondary-purple));
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .row {
+            display: flex;
+            gap: 25px;
+        }
+
+        .row .form-group {
+            flex: 1;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #f0fff4, #e6fffa);
+            border-radius: 12px;
+            color: #2f855a;
+            margin-top: 20px;
+            border: 2px solid rgba(72, 187, 120, 0.2);
+            animation: successSlideIn 0.5s ease;
+        }
+
+        .error-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #fed7d7, #fbb6ce);
+            border-radius: 12px;
+            color: #c53030;
+            margin-top: 20px;
+            border: 2px solid rgba(197, 48, 48, 0.2);
+            animation: successSlideIn 0.5s ease;
+        }
+
+        @keyframes successSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message h3,
+        .error-message h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+
+        .success-message p,
+        .error-message p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .transaction-details {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #48bb78;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: var(--primary-purple);
+            font-weight: 600;
+        }
+
+        .spinner {
+            border: 3px solid rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid var(--primary-purple);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-animation"></div>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="container">
+       
+
+        <h1>Join EduConnect Platform</h1>
+        <form id="registrationForm">
+            <div class="row">
+                <div class="form-group">
+                    <label for="firstName">First Name<span class="required">*</span></label>
+                    <input type="text" id="firstName" name="firstName" placeholder="Enter your first name">
+                    <div class="error" id="firstNameError">First name is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name<span class="required">*</span></label>
+                    <input type="text" id="lastName" name="lastName" placeholder="Enter your last name">
+                    <div class="error" id="lastNameError">Last name is required</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address<span class="required">*</span></label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address">
+                <div class="error" id="emailError">Please enter a valid email address</div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number<span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                <div class="error" id="phoneError">Please enter a valid phone number</div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label for="city">City<span class="required">*</span></label>
+                    <input type="text" id="city" name="city" placeholder="Enter your city">
+                    <div class="error" id="cityError">City is required</div>
+                </div>
+                <div class="form-group">
+                    <label for="state">State<span class="required">*</span></label>
+                    <select id="state" name="state">
+                        <option value="">Select your state</option>
+                        <option value="AP">Andhra Pradesh</option>
+                        <option value="AR">Arunachal Pradesh</option>
+                        <option value="AS">Assam</option>
+                        <option value="BR">Bihar</option>
+                        <option value="CG">Chhattisgarh</option>
+                        <option value="GA">Goa</option>
+                        <option value="GJ">Gujarat</option>
+                        <option value="HR">Haryana</option>
+                        <option value="HP">Himachal Pradesh</option>
+                        <option value="JH">Jharkhand</option>
+                        <option value="KA">Karnataka</option>
+                        <option value="KL">Kerala</option>
+                        <option value="MP">Madhya Pradesh</option>
+                        <option value="MH">Maharashtra</option>
+                        <option value="MN">Manipur</option>
+                        <option value="ML">Meghalaya</option>
+                        <option value="MZ">Mizoram</option>
+                        <option value="NL">Nagaland</option>
+                        <option value="OR">Odisha</option>
+                        <option value="PB">Punjab</option>
+                        <option value="RJ">Rajasthan</option>
+                        <option value="SK">Sikkim</option>
+                        <option value="TN">Tamil Nadu</option>
+                        <option value="TG">Telangana</option>
+                        <option value="TR">Tripura</option>
+                        <option value="UP">Uttar Pradesh</option>
+                        <option value="UT">Uttarakhand</option>
+                        <option value="WB">West Bengal</option>
+                        <option value="AN">Andaman and Nicobar Islands</option>
+                        <option value="CH">Chandigarh</option>
+                        <option value="DN">Dadra and Nagar Haveli and Daman and Diu</option>
+                        <option value="DL">Delhi</option>
+                        <option value="JK">Jammu and Kashmir</option>
+                        <option value="LA">Ladakh</option>
+                        <option value="LD">Lakshadweep</option>
+                        <option value="PY">Puducherry</option>
+                    </select>
+                    <div class="error" id="stateError">Please select your state</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="course">Course of Interest<span class="required">*</span></label>
+                <select id="course" name="course">
+                    <option value="">Select your course</option>
+                    <option value="web-development">Web Development</option>
+                    <option value="artificial-intelligence">Artificial Intelligence</option>
+                    <option value="data-structures">Data Structures</option>
+                    <option value="cyber-security">Cyber Security</option>
+                    <option value="machine-learning">Machine Learning</option>
+                    <option value="data-science">Data Science</option>
+                </select>
+                <div class="error" id="courseError">Please select a course</div>
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">Join Now</button>
+
+            <div class="loading" id="loadingMessage">
+                <div class="spinner"></div>
+                Sending confirmation email...
+            </div>
+
+            <div class="success-message" id="successMessage">
+                <h3>🎉 Registration Successful!</h3>
+                <p>Thank you for joining EduConnect! Your registration has been processed successfully.</p>
+                <div class="transaction-details">
+                    <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+                    <p><strong>Reference ID:</strong> <span id="referenceId"></span></p>
+                    <p><strong>Selected Course:</strong> <span id="selectedCourse"></span></p>
+                    <p><strong>Registration Date:</strong> <span id="registrationDate"></span></p>
+                </div>
+                <p>📧 A confirmation email has been sent to your registered email address from
+                    <strong>srisatyasaimalluri@gmail.com</strong></p>
+                <p>Our team will contact you within 24 hours to provide course details and next steps.</p>
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                <h3>❌ Email Sending Failed</h3>
+                <p>Your registration was processed, but we couldn't send the confirmation email.</p>
+                <p><strong>Please save these details:</strong></p>
+                <div class="transaction-details">
+                    <p><strong>Transaction ID:</strong> <span id="errorTransactionId"></span></p>
+                    <p><strong>Reference ID:</strong> <span id="errorReferenceId"></span></p>
+                </div>
+                <p>Please contact us at <strong>srisatyasaimalluri@gmail.com</strong> with your transaction details.</p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Initialize EmailJS with your public key
+        (function () {
+            // Replace with your actual EmailJS public key
+            emailjs.init('y23Z-t0OWJzqllNpy');
+        })();
+
+        // Configuration - Replace with your actual EmailJS details
+        const EMAILJS_CONFIG = {
+            serviceId: 'service_yp29sga',
+            templateId: 'template_8p17pjo',
+            publicKey: 'y23Z-t0OWJzqllNpy'
+        };
+
+        // Generate random IDs
+        function generateTransactionId() {
+            const prefix = 'EDU';
+            const timestamp = Date.now().toString().slice(-8);
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return ${prefix}${timestamp}${random};
+        }
+
+        function generateReferenceId() {
+            const prefix = 'REF';
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = prefix;
+            for (let i = 0; i < 8; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        }
+
+        // Send confirmation email using EmailJS
+        async function sendConfirmationEmail(formData, transactionId, referenceId) {
+            const courseSelect = document.getElementById('course');
+            const courseName = courseSelect.options[courseSelect.selectedIndex].text;
+
+            const templateParams = {
+                to_email: formData.email,
+                user_name: ${formData.firstName} ${formData.lastName},
+                user_email: formData.email,
+                user_phone: formData.phone,
+                user_city: formData.city,
+                user_state: formData.state,
+                course_name: courseName,
+                transaction_id: transactionId,
+                reference_id: referenceId,
+                registration_date: new Date().toLocaleDateString('en-IN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            };
+
+            try {
+                const response = await emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    templateParams
+                );
+
+                console.log('Email sent successfully:', response);
+                return { success: true, response };
+            } catch (error) {
+                console.error('Email sending failed:', error);
+                return { success: false, error };
+            }
+        }
+
+        // Form submission handler
+        document.getElementById('registrationForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Reset messages
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            const errorElements = document.querySelectorAll('.error');
+            errorElements.forEach(el => el.style.display = 'none');
+
+            // Get form values
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const city = document.getElementById('city').value.trim();
+            const state = document.getElementById('state').value;
+            const course = document.getElementById('course').value;
+
+            let isValid = true;
+
+            // Validation
+            if (firstName === '') {
+                document.getElementById('firstNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (lastName === '') {
+                document.getElementById('lastNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            const phoneRegex = /^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$/;
+            if (!phoneRegex.test(phone.replace(/[\s\-().]/g, ''))) {
+                document.getElementById('phoneError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (city === '') {
+                document.getElementById('cityError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (state === '') {
+                document.getElementById('stateError').style.display = 'block';
+                isValid = false;
+            }
+
+            if (course === '') {
+                document.getElementById('courseError').style.display = 'block';
+                isValid = false;
+            }
+
+            // If form is valid, process registration
+            if (isValid) {
+                const formData = {
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    city,
+                    state,
+                    course
+                };
+
+                // Generate IDs
+                const transactionId = generateTransactionId();
+                const referenceId = generateReferenceId();
+
+                // Show loading and disable button
+                document.getElementById('loadingMessage').style.display = 'block';
+                document.getElementById('submitBtn').disabled = true;
+                document.getElementById('submitBtn').textContent = 'Sending Email...';
+
+                try {
+                    // Send email
+                    const emailResult = await sendConfirmationEmail(formData, transactionId, referenceId);
+
+                    // Hide loading
+                    document.getElementById('loadingMessage').style.display = 'none';
+                    document.getElementById('submitBtn').disabled = false;
+                    document.getElementById('submitBtn').textContent = 'Join Now';
+
+                    if (emailResult.success) {
+                        // Show success message
+                        const courseSelect = document.getElementById('course');
+                        const courseName = courseSelect.options[courseSelect.selectedIndex].text;
+
+                        document.getElementById('transactionId').textContent = transactionId;
+                        document.getElementById('referenceId').textContent = referenceId;
+                        document.getElementById('selectedCourse').textContent = courseName;
+                        document.getElementById('registrationDate').textContent = new Date().toLocaleDateString('en-IN', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+
+                        document.getElementById('successMessage').style.display = 'block';
+
+                        // Reset form
+                        document.getElementById('registrationForm').reset();
+
+                        // Hide success message after 20 seconds
+                        setTimeout(() => {
+                            document.getElementById('successMessage').style.display = 'none';
+                        }, 20000);
+
+                    } else {
+                        // Show error message with transaction details
+                        document.getElementById('errorTransactionId').textContent = transactionId;
+                        document.getElementById('errorReferenceId').textContent = referenceId;
+                        document.getElementById('errorMessage').style.display = 'block';
+
+                        // Hide error message after 30 seconds
+                        setTimeout(() => {
+                            document.getElementById('errorMessage').style.display = 'none';
+                        }, 30000);
+                    }
+
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    document.getElementById('loadingMessage').style.display = 'none';
+                    document.getElementById('submitBtn').disabled = false;
+                    document.getElementById('submitBtn').textContent = 'Join Now';
+
+                    document.getElementById('errorTransactionId').textContent = transactionId;
+                    document.getElementById('errorReferenceId').textContent = referenceId;
+                    document.getElementById('errorMessage').style.display = 'block';
+                }
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('email').addEventListener('blur', function () {
+            const email = this.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (email && !emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+            }
+        });
+
+        document.getElementById('phone').addEventListener('blur', function () {
+            const phone = this.value.trim();
+            const phoneRegex = /^(\+91[\-\s]?)?[0]?(91)?[6789]\d{9}$/;
+
+            if (phone && !phoneRegex.test(phone.replace(/[\s\-().]/g, ''))) {
+                document.getElementById('phoneError').style.display = 'block';
+            } else {
+                document.getElementById('phoneError').style.display = 'none';
+            }
+        });
+
+        // Interactive effects
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+
+            input.addEventListener('blur', function () {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+
+</html>
