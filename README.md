@@ -38,12 +38,4 @@
 4. Use the resume checker to polish your resume.
 5. Track your performance using interview analysis tools.
 
----
 
-## **Contributing**
-
-We welcome contributions! If you want to enhance EduConnect:
-1. Fork the repository.
-2. Create a new feature branch:  
-   ```bash
-   git checkout -b feature-name
